@@ -1,0 +1,12 @@
+{% extends 'app/base.html' %}
+
+{% block content %}
+
+<div class="mb-4">
+	<h4 class="fs-4 d-inline-block me-4">New Questions</h4>
+	<a href={% url 'hot' %} class="fs-4 d-inline-block">Hot Questions</a>
+</div>
+
+{% include 'app/components/questions.html' with questions=questions cnt_pages=cnt_pages cur_page=cur_page %}
+
+{% endblock %}

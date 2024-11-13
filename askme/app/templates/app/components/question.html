@@ -1,0 +1,24 @@
+<div class="w-75 border border-3 border-dark p-3 mb-2 row">
+    <div class="col-2 d-flex flex-column align-items-center">
+        <img src="https://via.placeholder.com/50" width="50" height="50" alt="Avatar"
+            class="mb-4">
+        <div>
+            <button type="button" class="btn">-</button>
+            <span class="d-inline-block">{{ question.likes }}</span>
+            <button type="button" class="btn">+</button>
+        </div>
+    </div>
+    <div class="col-10">
+        <a href="{% url 'answer' %}?id={{ question.id }}" class="fs-5">{{ question.title }}</a>
+        <p>{{ question.description }}</p>
+        <div>
+            <a href="{% url 'answer' %}?id={{ question.id }}" class="me-3">answer ({{ question.cnt_comments }})</a>
+            <div class="d-inline-block">
+                <span>Tags: </span>
+                {% for tag in question.tags %}
+                    <a href="#">{{ tag }}</a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
