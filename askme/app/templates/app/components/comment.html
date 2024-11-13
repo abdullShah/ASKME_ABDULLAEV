@@ -6,12 +6,13 @@
             class="mb-4">
         <div>
             <button type="button" class="btn">-</button>
-            <span class="d-inline-block">{{ comment.likes }}</span>
+            <span class="d-inline-block">{{ comment.likes_count }}</span>
             <button type="button" class="btn">+</button>
         </div>
     </div>
     <div class="col-10">
-        <p>{{ comment.answer }}</p>
+        <p>The responder: <a href="#">{{ comment.user }}</a></p> <!-- сделать ссылку -->
+        <p>{{ comment.text }}</p>
         <p class="d-flex align-items-center">
 			{% if comment.isCorrect %}
 				<img src="{% static 'app/images/check_square.svg' %}" width="16" height="16" alt="Square" class='me-2'> 
