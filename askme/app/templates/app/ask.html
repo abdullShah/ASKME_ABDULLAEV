@@ -1,0 +1,33 @@
+{% extends 'app/base.html' %}
+
+{% block content %}
+<div class="mb-4">
+	<h4 class="fs-4 d-inline-block me-4">New Questions</h4>
+</div>
+
+<form class="w-75">
+	<div id="exampleFormControlInput" class="invalid-feedback d-block">
+		Sorry, title is empty!
+	</div>
+	<div class="mb-5 mt-3 row">
+		<label for="exampleFormControlInput1" class="form-label col-3">Title</label>
+		<input type="text" class="col-9" id="exampleFormControlInput1">
+	</div>
+	<div class="mb-5 row">
+		<label for="exampleFormControlTextarea1" class="form-label col-3">Text</label>
+		<textarea class="col-9" id="exampleFormControlTextarea1" rows="3"
+			style="height: 370px; resize: none"></textarea>
+	</div>
+	<div class="mb-5 row">
+		<label for="exampleFormControlInput2" class="form-label col-3">Tags</label>
+		<input type="text" class="col-9" id="exampleFormControlInput2">
+	</div>
+	<div class="mb-5 row">
+		<div class="col-3"></div>
+		<div class="col-9">
+			<button type="submit" class="btn btn-primary mt-2">ASK!</button>
+		</div>
+	</div>
+
+</form>
+{% endblock %}

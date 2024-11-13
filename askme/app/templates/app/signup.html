@@ -1,0 +1,43 @@
+{% extends 'app/base.html' %}
+
+{% block content %}
+<div class="mb-4">
+	<h4 class="fs-4 d-inline-block me-4">Registration</h4>
+</div>
+
+<form class="w-75">
+	<div id="exampleFormControlInput" class="invalid-feedback d-block">
+		Sorry, this email address already registered!
+	</div>
+	<div class="mb-5 mt-4 row">
+		<label for="exampleFormControlInput1" class="form-label col-3">Login</label>
+		<input type="text" class="col-9" id="exampleFormControlInput1">
+	</div>
+	<div class="mb-5 row">
+		<label for="exampleFormControlInput2" class="form-label col-3">Email</label>
+		<input type="email" class="col-9" id="exampleFormControlInput2">
+	</div>
+	<div class="mb-5 row">
+		<label for="exampleFormControlInput3" class="form-label col-3">NickName</label>
+		<input type="text" class="col-9" id="exampleFormControlInput3">
+	</div>
+	<div class="mb-5 row">
+		<label for="exampleFormControlInput4" class="form-label col-3">Password</label>
+		<input type="password" class="col-9" id="exampleFormControlInput4">
+	</div>
+	<div class="mb-5 row">
+		<label for="exampleFormControlInput5" class="form-label col-3">Re-Password</label>
+		<input type="password" class="col-9" id="exampleFormControlInput5">
+	</div>
+	<div class="mb-5 row">
+		<label for="formFile" class="form-label col-3">Upload Avatar</label>
+		<input class="form-control col-9 w-75" type="file" id="formFile">
+	</div>
+	<div class="mb-5 row">
+		<div class="col-3"></div>
+		<div class="col-9">
+			<button type="submit" class="btn btn-primary mt-2">Register!</button>
+		</div>
+	</div>
+</form>
+{% endblock %}

@@ -1,0 +1,24 @@
+{% load static %}
+
+<div class="w-75 border border-3 border-dark p-3 mb-2 row">
+    <div class="col-2 d-flex flex-column align-items-center">
+        <img src="https://via.placeholder.com/75" width="75" height="75" alt="Avatar"
+            class="mb-4">
+        <div>
+            <button type="button" class="btn">-</button>
+            <span class="d-inline-block">{{ comment.likes }}</span>
+            <button type="button" class="btn">+</button>
+        </div>
+    </div>
+    <div class="col-10">
+        <p>{{ comment.answer }}</p>
+        <p class="d-flex align-items-center">
+			{% if comment.isCorrect %}
+				<img src="{% static 'app/images/check_square.svg' %}" width="16" height="16" alt="Square" class='me-2'> 
+			{% else %}
+				<img src="{% static 'app/images/square.svg' %}" width="16" height="16" alt="Square" class='me-2'> 
+			{% endif %}
+			Correct
+		</p>
+    </div>
+</div>

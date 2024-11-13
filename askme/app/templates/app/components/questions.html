@@ -1,0 +1,7 @@
+<div class="mb-4">
+	{% for question in questions %}
+		{% include 'app/components/question.html' with question=question %}
+	{% endfor %}
+</div>
+
+{% include 'app/components/pagination.html' with cnt_pages=cnt_pages cur_page=cur_page %}

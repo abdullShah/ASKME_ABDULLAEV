@@ -1,0 +1,31 @@
+{% extends 'app/base.html' %}
+
+{% block content %}
+<div class="mb-4">
+	<h4 class="fs-4 d-inline-block me-4">Log In</h4>
+</div>
+
+<form class="w-75">
+	<div id="exampleFormControlInput" class="invalid-feedback d-block">
+		Sorry, wrong password!
+	</div>
+	<div class="mb-5 mt-4 row">
+		<label for="exampleFormControlInput1" class="form-label col-3">Login</label>
+		<input type="text" class="col-9" id="exampleFormControlInput1">
+	</div>
+	<div class="mb-5 row">
+		<label for="exampleFormControlInput2" class="form-label col-3">Password</label>
+		<input type="password" class="col-9" id="exampleFormControlInput2">
+	</div>
+	<div class="mb-5 row">
+		<div class="col-3"></div>
+		<div class="col-9">
+			<button type="submit" class="btn btn-primary mt-2">Log in!</button>
+			<div class="mt-3">
+				<a href="{% url 'signup' %}">create new account</a>
+			</div>
+		</div>
+	</div>
+
+</form>
+{% endblock %}

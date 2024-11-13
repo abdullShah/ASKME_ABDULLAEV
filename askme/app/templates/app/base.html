@@ -1,3 +1,4 @@
+{% load static %}
 <!doctype html>
 <html lang="en">
 
@@ -7,40 +8,39 @@
 
 	<title>Questions and Answers</title>
 
-	<link rel="stylesheet" href="./static/css/bootstrap.min.css">
-	<link rel="stylesheet" href="./static/css/bootstrap.min.css.map">
-	<script defer src="./static/js/bootstrap.min.js"></script>
-	<script defer src="./static/js/bootstrap.min.js.map"></script>
+	<link rel="stylesheet" href="{% static 'app/css/bootstrap.min.css' %}">
+	<link rel="stylesheet" href="{% static 'app/css/bootstrap.min.css.map' %}">
+	<script defer src="{% static 'app/js/bootstrap.min.js' %}"></script>
+	<script defer src="{% static 'app/js/bootstrap.min.js.map' %}"></script>
 
 	<link rel="stylesheet" href="./static/css/style.css">
+	<link rel="stylesheet" href="{% static 'app/css/style.css' %}">
 </head>
 
 <body>
 	<header class="mb-4">
 		<div class="container">
 			<nav class="navbar border-bottom">
-				<a class="text-dark fs-2 navbar-brand" href="#">AskPupkin</a>
+				<a class="text-dark fs-2 navbar-brand" href="{% url 'home' %}">AskPupkin</a>
 
 				<form class="d-flex gap-3">
 					<input class="form-control" type="search" placeholder="Search" aria-label="Search">
-					<button type="button" class="btn btn-success">ASK!</button>
+					<a href="{% url 'ask' %}" class="btn btn-success" role="button">ASK!</a>
 				</form>
 
-				<div class="d-flex gap-3">
+				<!--<div class="d-flex gap-3">
 					<img src="https://via.placeholder.com/50" width="50" height="50" alt="Avatar">
 					<div>
 						<p class="mb-0">Dr. Pepper</p>
 						<a href="#" class="text-primary me-4">settings</a>
 						<a href="#" class="text-primary">log out</a>
 					</div>
-				</div>
+				</div>-->
 
-				<!--
 				<div class="d-flex gap-4">
-					<a href="#" class="text-primary">log in</a>
-					<a href="#" class="text-primary">register</a>
+					<a href="{% url 'login' %}" class="text-primary">log in</a>
+					<a href="{% url 'signup' %}" class="text-primary">register</a>
 				</div>
-				-->
 			</nav>
 		</div>
 	</header>
@@ -49,35 +49,8 @@
 		<div class="container">
 			<div class="row">
 				<section class="col-9">
-					<div class="mb-4">
-						<h4 class="fs-4 d-inline-block me-4">New Questions</h4>
-					</div>
-
-					<form class="w-75">
-						<div id="exampleFormControlInput2" class="invalid-feedback d-block">
-							Sorry, title is empty!
-						</div>
-						<div class="mb-5 mt-3 row">
-							<label for="exampleFormControlInput1" class="form-label col-3">Title</label>
-							<input type="text" class="col-9" id="exampleFormControlInput1">
-						</div>
-						<div class="mb-5 row">
-							<label for="exampleFormControlTextarea1" class="form-label col-3">Text</label>
-							<textarea class="col-9" id="exampleFormControlTextarea1" rows="3"
-								style="height: 370px; resize: none"></textarea>
-						</div>
-						<div class="mb-5 row">
-							<label for="exampleFormControlInput2" class="form-label col-3">Tags</label>
-							<input type="text" class="col-9" id="exampleFormControlInput2">
-						</div>
-						<div class="mb-5 row">
-							<div class="col-3"></div>
-							<div class="col-9">
-								<button type="submit" class="btn btn-primary mt-2">ASK!</button>
-							</div>
-						</div>
-
-					</form>
+					{% block content %}
+					{% endblock %}
 				</section>
 				<aside class="col-3 mt-5">
 					<div>
@@ -128,18 +101,18 @@
 				<ul class="nav d-flex list-unstyled ">
 					<li class="ms-3">
 						<a class="text-muted" href="https://github.com/abdullShah">
-							<img src="./static/images/github.svg" width="24" height="24" alt="Github">
+							<img src="{% static 'app/images/github.svg' %}" width="24" height="24" alt="Github">
 						</a>
 					</li>
 					<li class="ms-3">
 						<a class="text-muted" href="https://vk.com/abdul.shah">
-							<img src="./static/images/vk.svg" width="24" height="24" alt="Vk">
+							<img src="{% static 'app/images/vk.svg' %}" width="24" height="24" alt="Vk">
 						</a>
 					</li>
 					<li class="ms-3">
 
 						<a class="text-muted" href="https://t.me/abdull_shahmar">
-							<img src="./static/images/tg.svg" width="24" height="24" alt="Telegram">
+							<img src="{% static 'app/images/tg.svg' %}" width="24" height="24" alt="Telegram">
 						</a>
 					</li>
 				</ul>
