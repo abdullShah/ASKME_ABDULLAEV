@@ -1,7 +1,9 @@
+{% load static %}
+
 <div class="w-75 border border-3 border-dark p-3 mb-2 row">
     <div class="col-2 d-flex flex-column align-items-center">
-        <img src="https://via.placeholder.com/50" width="50" height="50" alt="Avatar"
-            class="mb-4">
+        <img src="{% static 'app/' %}{{ question.image }}" width="50" height="50" alt="Avatar"
+            class="mb-4" onerror="this.src='https://via.placeholder.com/50';">
         <div>
             <button type="button" class="btn">-</button>
             <span class="d-inline-block">{{ question.likes_count }}</span>

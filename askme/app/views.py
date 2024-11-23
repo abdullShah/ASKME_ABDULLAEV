@@ -25,7 +25,7 @@ def paginate(obj_list, req, per_page=4):
 
 
 def index(request):
-	questions = Question.objects.new().annotate(likes_count=Count('likes'))
+	questions = Question.objects.new()
 	if questions.count() == 0:
 		return render(request, 'app/empty.html', {'popular_tags': Tag.objects.popular().values_list('name', flat=True)})
 
@@ -59,11 +59,11 @@ def answer(request, question_id):
 	except ValueError:
 		return render(request, 'app/site_404.html')
 
-	question = Question.objects.annotate(likes_count=Count('likes')).filter(id=question_id).first()
+	question = Question.objects.new().filter(id=question_id).first()
 	if question is None:
 		return render(request, 'app/empty.html', {'popular_tags': Tag.objects.popular().values_list('name', flat=True)})
 
-	answers = Answer.objects.answers(question=question).annotate(likes_count=Count('likes'))
+	answers = Answer.objects.answers(question=question)
 
 	paginated_answers, cur_page = paginate(answers, request, CNT_ANSWERS_ON_PAGE)
 	if not paginated_answers:
@@ -104,9 +104,7 @@ def tag(request, tag_name):
 	if tag is None:
 		return render(request, 'app/empty.html', {'popular_tags': Tag.objects.popular().values_list('name', flat=True)})
 
-	questions_by_tag = Question.objects.filter(tags=tag).annotate(
-        likes_count=Count('likes', distinct=True)
-    ).order_by('-created_at')
+	questions_by_tag = Question.objects.filter(tags=tag).order_by('-created_at')
 
 	paginated_questions, cur_page = paginate(questions_by_tag, request, per_page=CNT_QUESTS_ON_PAGE)
 	if not paginated_questions:
