@@ -1,36 +1,38 @@
 {% extends 'app/base.html' %}
 
+{% block popular_tags %}
+	{% include 'app/components/popular_tags.html' with tags=popular_tags %}
+{% endblock %}
+
 {% block content %}
 <div class="w-75 border-bottom border-1 border-dark p-3 mb-4 row">
 	<div class="col-2 d-flex flex-column align-items-center">
 		<img src="https://via.placeholder.com/90" width="90" height="90" alt="Avatar" class="mb-4">
 		<div>
 			<button type="button" class="btn">-</button>
-			<span class="d-inline-block">{{ question.likes }}</span>
+			<span class="d-inline-block">{{ question.likes_count }}</span>
 			<button type="button" class="btn">+</button>
 		</div>
 	</div>
 	<div class="col-10">
 		<h4 class="fs-4">{{ question.title }}</h4>
-		<p>{{ question.description }}</p>
+		<p>{{ question.text }}</p>
 		<div>
 			<div class="d-inline-block">
 				<span>Tags: </span>
-				{% for tag in question.tags %}
-					<a href="#">{{ tag }}</a>
+				{% for tag in question.tags.all %}
+					<a href="{% url 'tag' tag %}">{{ tag }}</a>
 				{% endfor %}
 			</div>
 		</div>
 	</div>
 </div>
 <div>
-	{% for comment in question.comments %}
-		{% include 'app/components/comment.html' with comment=comment %}
-	{% endfor %}
+	{% include 'app/components/comments.html' with comments=answers cnt_pages=cnt_pages cur_page=cur_page %}
 </div>
 <form>
 	<div class="mb-3">
-		<textarea class="form-control w-75" style="max-height: 140px;"
+		<textarea class="form-control w-50" style="max-height: 140px;"
 			id="exampleFormControlTextarea1" rows="3"
 			placeholder="Enter your answer here.."></textarea>
 	</div>

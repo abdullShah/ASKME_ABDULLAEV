@@ -1,0 +1,11 @@
+{% extends 'app/base.html' %}
+
+{% block popular_tags %}
+	{% include 'app/components/popular_tags.html' with tags=popular_tags %}
+{% endblock %}
+
+{% block content %}
+
+<h4 class="fs-4 d-inline-block me-4">По вашему запросу нет данных :-)</h4>
+
+{% endblock %}

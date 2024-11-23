@@ -1,7 +1,14 @@
 <nav aria-label="Page navigation example">
 	<ul class="pagination">
 		<li class="page-item {% if cur_page == 1 %}disabled{% endif %}">
-			<a class="page-link" href="?page={{ cur_page|add:-1 }}" aria-label="Previous">
+			<a class="page-link" href="?
+			{% for key, value in request.GET.items %}
+				{% if key != 'page' %}
+					{{ key }}={{ value }}&
+				{% endif %}
+			{% endfor %}
+			page={{ cur_page|add:-1 }}"
+			   aria-label="Previous">
 				<span aria-hidden="true">&laquo;</span>
 			</a>
 		</li>
@@ -9,7 +16,15 @@
 		{% for i in cnt_pages %}
 			{% if i <= 3 or i > cnt_pages|length|add:-3 or i >= cur_page|add:-1 and i <= cur_page|add:1 %}
 				<li class="page-item {% if cur_page == i %}active{% endif %}">
-					<a class="page-link" href="?page={{ i }}">{{ i }}</a>
+					<a class="page-link" href="?
+					{% for key, value in request.GET.items %}
+						{% if key != 'page' %}
+							{{ key }}={{ value }}&
+						{% endif %}
+					{% endfor %}
+					page={{ i }}">
+						{{ i }}
+					</a>
 				</li>
 			{% elif i == 4 or i == cnt_pages|length|add:-3 %}
 				<li class="page-item disabled">
@@ -19,9 +34,17 @@
 		{% endfor %}
 
 		<li class="page-item {% if cur_page == cnt_pages|length %}disabled{% endif %}">
-			<a class="page-link" href="?page={{ cur_page|add:1 }}" aria-label="Next">
+			<a class="page-link" href="?
+			{% for key, value in request.GET.items %}
+				{% if key != 'page' %}
+					{{ key }}={{ value }}&
+				{% endif %}
+			{% endfor %}
+			page={{ cur_page|add:1 }}"
+			   aria-label="Next">
 				<span aria-hidden="true">&raquo;</span>
 			</a>
+
 		</li>
 	</ul>
 </nav>

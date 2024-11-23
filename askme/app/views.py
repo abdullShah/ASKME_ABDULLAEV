@@ -1,115 +1,127 @@
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render
+from django.shortcuts import get_object_or_404
+from app.models import Question, Answer, Tag, Profile
+from django.db.models import Count
+# from django.http import Http404
 
-import random # !
-
-CNT_ON_PAGE = 4
-
-arr_questions = []
-CNT_Q = 80
-
-for i in range(CNT_Q):
-	arr_questions.append({
-		'id': i,
-		'likes': 5,
-		'title': 'How to build a moon park ? ' + str(i + 1),
-		'description': 'Guys, i have trouble with a moon park. Cant find the black-jack...',
-		'cnt_comments': 3,
-		'comments': [
-			{
-				'likes': 7,
-				'answer': 'First of all I would like to thank you for the invitation to participate in such a ... Russia is the huge territory which in many respects needs to be render habitable.' + str(i + 1),
-				'isCorrect': True,
-			},
-			{
-				'likes': 7,
-				'answer': 'First of all I would like to thank you for the invitation to participate in such a ... Russia is the huge territory which in many respects needs to be render habitable.' + str(i + 1),
-				'isCorrect': True,
-			},
-			{
-				'likes': 7,
-				'answer': 'First of all I would like to thank you for the invitation to participate in such a ... Russia is the huge territory which in many respects needs to be render habitable.' + str(i + 1),
-				'isCorrect': True,
-			},
-		],
-		'tags': ['black-jack', 'bender']
-	})
+CNT_QUESTS_ON_PAGE = 4
+CNT_ANSWERS_ON_PAGE = 2
 
 def paginate(obj_list, req, per_page=4):
-    paginator = Paginator(obj_list, per_page)
-    page_number = req.GET.get('page', 1)
+	paginator = Paginator(obj_list, per_page)
+	page_number = req.GET.get('page', 1)
 
-    try:
-        page_number = int(page_number)
-    except ValueError:
-        return None, None
+	try:
+		page_number = int(page_number)
+	except ValueError:
+		return None, None
 
-    try:
-        page = paginator.page(page_number)
-        return page, page_number
-    except (EmptyPage, PageNotAnInteger):
-        return None, None
+	try:
+		page = paginator.page(page_number)
+		return page, page_number
+	except (EmptyPage, PageNotAnInteger):
+		return None, None
 
 
 def index(request):
-	# Получаю данные arr_questions
+	questions = Question.objects.new()
+	if questions.count() == 0:
+		return render(request, 'app/empty.html', {'popular_tags': Tag.objects.popular().values_list('name', flat=True)})
 
-	paginated_questions, cur_page = paginate(arr_questions, request, CNT_ON_PAGE)
-
+	paginated_questions, cur_page = paginate(questions, request, CNT_QUESTS_ON_PAGE)
 	if not paginated_questions:
-		return render(request, 'app/error.html')
+		return render(request, 'app/site_404.html')
+		#return render(request, 'app/error.html')
+		#raise Http404("Страница не найдена")
 
 	data = {
-	'questions': paginated_questions,
-	'cnt_pages': range(1, (CNT_Q + CNT_ON_PAGE - 1) // CNT_ON_PAGE + 1),
-	'cur_page': cur_page
+		'questions': paginated_questions,
+		'cnt_pages': range(1, (questions.count() + CNT_QUESTS_ON_PAGE - 1) // CNT_QUESTS_ON_PAGE + 1),
+		'cur_page': cur_page,
+		'popular_tags': Tag.objects.popular().values_list('name', flat=True)
 	}
 
 	return render(request, 'app/index.html', data)
 
 def ask(request):
-    return render(request, 'app/ask.html')
+	return render(request, 'app/ask.html')
 
 def login(request):
-    return render(request, 'app/login.html')
+	return render(request, 'app/login.html')
 
 def signup(request):
-    return render(request, 'app/signup.html')
+	return render(request, 'app/signup.html')
 
-def answer(request):
-	def find_question_by_id(arr_questions, question_id):
-		for question in arr_questions:
-			if question['id'] == question_id:
-				return question
-		return None
+def answer(request, question_id):
+	try:
+		question_id = int(question_id)
+	except ValueError:
+		return render(request, 'app/site_404.html')
 
-	# Получаю данные arr_questions
+	question = Question.objects.new().filter(id=question_id).first()
+	if question is None:
+		return render(request, 'app/empty.html', {'popular_tags': Tag.objects.popular().values_list('name', flat=True)})
 
-	question_id = int(request.GET.get('id'))
-	found_question = find_question_by_id(arr_questions, question_id)
-    
-	if not found_question:
-		return render(request, 'app/error.html')
-      
-	return render(request, 'app/answer.html', {'question': found_question})
+	answers = Answer.objects.answers(question=question)
+
+	paginated_answers, cur_page = paginate(answers, request, CNT_ANSWERS_ON_PAGE)
+	if not paginated_answers:
+		return render(request, 'app/site_404.html')
+
+	return render(request, 'app/answer.html', {
+		'question': question,
+		'answers': paginated_answers,
+		'cnt_pages': range(1, (answers.count() + CNT_ANSWERS_ON_PAGE - 1) // CNT_ANSWERS_ON_PAGE + 1),
+		'cur_page': cur_page,
+		'popular_tags': Tag.objects.popular().values_list('name', flat=True)
+	})
 
 
 def hot(request):
-	# Получаю данные arr_questions
-	shuffled_questions = random.sample(arr_questions, len(arr_questions)) # !
+	popular_questions = Question.objects.popular()
+	popular_questions_count = popular_questions.count()
 
-	paginated_questions, cur_page = paginate(shuffled_questions, request, CNT_ON_PAGE)
-	
+	if popular_questions_count == 0:
+		return render(request, 'app/empty.html', {'popular_tags': Tag.objects.popular().values_list('name', flat=True)})
+
+	paginated_questions, cur_page = paginate(popular_questions, request, CNT_QUESTS_ON_PAGE)
+
 	if not paginated_questions:
-		return render(request, 'app/error.html')
+		return render(request, 'app/site_404.html')
 
 	data = {
 		'questions': paginated_questions,
-		'cnt_pages': range(1, (CNT_Q + CNT_ON_PAGE - 1) // CNT_ON_PAGE + 1),
-		'cur_page': cur_page
+		'cnt_pages': range(1, (popular_questions_count + CNT_QUESTS_ON_PAGE - 1) // CNT_QUESTS_ON_PAGE + 1),
+		'cur_page': cur_page,
+		'popular_tags': Tag.objects.popular().values_list('name', flat=True)
 	}
 
 	return render(request, 'app/hot.html', data)
 
+def tag(request, tag_name):
+	tag = Tag.objects.filter(name=tag_name).first()
+	if tag is None:
+		return render(request, 'app/empty.html', {'popular_tags': Tag.objects.popular().values_list('name', flat=True)})
+
+	questions_by_tag = Question.objects.filter(tags=tag).order_by('-created_at')
+
+	paginated_questions, cur_page = paginate(questions_by_tag, request, per_page=CNT_QUESTS_ON_PAGE)
+	if not paginated_questions:
+		return render(request, 'app/site_404.html')
+
+	data = {
+		'tag': tag,
+		'questions': paginated_questions,
+		'cnt_pages': range(1, (questions_by_tag.count() + CNT_QUESTS_ON_PAGE - 1) // CNT_QUESTS_ON_PAGE + 1),
+		'cur_page': cur_page,
+		'popular_tags': Tag.objects.popular().values_list('name', flat=True)
+	}
+
+	return render(request, 'app/tag.html', data)
+
 def error(request):
-    return render(request, 'app/error.html')
+	return render(request, 'app/error.html')
+
+def site_404(request):
+	return render(request, 'app/site_404.html')

@@ -1,5 +1,9 @@
 {% extends 'app/base.html' %}
 
+{% block popular_tags %}
+	{% include 'app/components/popular_tags.html' with tags=popular_tags %}
+{% endblock %}
+
 {% block content %}
 
 <div class="mb-4">
@@ -9,4 +13,4 @@
 
 {% include 'app/components/questions.html' with questions=questions cnt_pages=cnt_pages cur_page=cur_page %}
 
-{% endblock %}
+{% endblock %}y

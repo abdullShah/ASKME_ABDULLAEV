@@ -1,0 +1,7 @@
+<div>
+    {% for comment in comments %}
+        {% include 'app/components/comment.html' with comment=comment %}
+    {% endfor %}
+</div>
+
+{% include 'app/components/pagination.html' with cnt_pages=cnt_pages cur_page=cur_page %}
